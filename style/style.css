@@ -1,0 +1,23 @@
+body, html {
+  margin: 0; 
+  padding: 0; 
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+#crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  z-index: 999;
+  background-color: grey;
+}
+
+#renderCanvas {
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
