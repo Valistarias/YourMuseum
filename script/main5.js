@@ -57,7 +57,7 @@ var scaleY=[0.8,0.52,0.26,0.9,0.4,0.2,0.7,0.5,0.3];
 var margintot = 60;
 
 // ECART ENTRE LES TABLEAUX 3D
-var margin3D = 0.5;
+var margin3D = 1;
 
 //LIENS DES IMAGES
 var imgtabs=["test0.jpg","test1.jpg","test2.jpg","test3.jpg","test4.jpg","test5.jpg","test6.jpg","test7.jpg","test8.jpg","test9.jpg"];
@@ -79,7 +79,7 @@ var self=this;
 //--------------------------------------------VALUES 3D--------------------------------------------
 //-------------------------------------------------------------------------------------------------
 // PATTERN STATIQUE
-var pattern = [4,9,6,9,4,2,6,3,4,5,7,6,5,3,8,3,1,5,4,9,7,6,5,4,2,4,5,6,4,8,9,7,1,2,3,4,5,6];
+var pattern = [1,4,9,6,9,4,2,6,3,4,5,7,6,5,3,8,3,1,5,4,9,7,6,5,4,2,4,5,6,4,8,9,7,1,2,3,4,5,6];
 
 // var nbsalle = 10;
 var canvas = document.getElementById("renderCanvas");
@@ -128,7 +128,7 @@ function createAll (pattern,valinit)
 		    tableaux[maxtaboftab].material.bumpTexture = new BABYLON.Texture("textures/wallmodified.jpg", scene);
 		    tableaux[maxtaboftab].material.diffuseTexture.hasAlpha = true;
 		    tableaux[maxtaboftab].scaling = new BABYLON.Vector3(scaleX[type],scaleY[type],0.02);
-		    tableaux[maxtaboftab].position = new BABYLON.Vector3(((-20*nbsalle)+10)-0.5-((scaleX[type]*10)/2)-maxvalueleft-margin3D,10-((scaleY[type]*10)/2)-margin3D,0);
+		    tableaux[maxtaboftab].position = new BABYLON.Vector3(((-20*nbsalle)+10)-0.5-((scaleX[type]*10)/2)-maxvalueleft-margin3D,10-((scaleY[type]*10)/2)-0.5,0);
 		    if(maxvalueleft==0)
 		    {
 		    	tableaux[maxtaboftab].position.x = ((-20*nbsalle)+10)-0.5-((scaleX[type]*10)/2)-margin3D;
@@ -168,6 +168,7 @@ function createAll (pattern,valinit)
 			saveline.push(level+pattern[valinit]);
 		}
 
+
 		else if(maxvalueleft+cadreWidth3D[type]<18 && maxvaluetop+cadreHeight3D[type]<8 && step==1 )
 		{
 			// output += '<div class="cadre'+pattern[valinit]+'" id="idcadre'+pattern[valinit]+'" style="width:'+cadreWidth3D[type]+'px;height:'+cadreHeight3D[type]+'px;left:'+maxvalueleft+'px;top:'+maxvaluetop+'px"></div>';
@@ -186,6 +187,7 @@ function createAll (pattern,valinit)
 		    if(murs%2==1)
 		    {
 		    	tableaux[maxtaboftab].position.z=-9.5
+		    	tableaux[maxtaboftab].rotation.z=Math.PI;
 		    }
 		    else
 		    {
@@ -216,7 +218,7 @@ function createAll (pattern,valinit)
 			saveline.push(level+pattern[valinit]);
 		}
 
-		else if(maxvalueleft-cadreWidth3D[type]>0 && maxvaluetop+cadreHeight3D[type]<8 && step==2)
+		else if(maxvalueleft-cadreWidth3D[type]>2.5 && maxvaluetop+cadreHeight3D[type]<8 && step==2)
 		{
 			// output += '<div class="cadre'+pattern[valinit]+'" id="idcadre'+pattern[valinit]+'" style="width:'+cadreWidth3D[type]+'px;height:'+cadreHeight3D[type]+'px;left:'+(maxvalueleft-cadreWidth3D[type])+'px;top:'+maxvaluetop+'px"></div>';
 			tableaux[maxtaboftab] = BABYLON.Mesh.CreateBox("tableau"+idtab, 10, scene);
@@ -225,10 +227,11 @@ function createAll (pattern,valinit)
 		    tableaux[maxtaboftab].material.bumpTexture = new BABYLON.Texture("textures/wallmodified.jpg", scene);
 		    tableaux[maxtaboftab].material.diffuseTexture.hasAlpha = true;
 		    tableaux[maxtaboftab].scaling = new BABYLON.Vector3(scaleX[type],scaleY[type],0.02);
-		    tableaux[maxtaboftab].position = new BABYLON.Vector3((-20*nbsalle)-0.5-margin3D+maxvalueleft,10-maxvaluetop-((scaleY[type]*10)/2)-margin3D,0);
+		    tableaux[maxtaboftab].position = new BABYLON.Vector3(((-20*nbsalle)+10)+0.5+((scaleX[type]*10)/2)-maxvalueleft+margin3D,10-maxvaluetop-((scaleY[type]*10)/2)-0.5-margin3D,0);
 		    if(murs%2==1)
 		    {
 		    	tableaux[maxtaboftab].position.z=-9.5
+		    	tableaux[maxtaboftab].rotation.z=Math.PI;
 		    }
 		    else
 		    {
@@ -250,7 +253,7 @@ function createAll (pattern,valinit)
 			}
 
 			// ON INCREMENTE LA VALEUR D'ELOIGNEMENT DU TABLEAU
-			maxvalueleft -= cadreWidth3D[type] + margin3D;
+			maxvalueleft -= ((scaleX[type]*10) + margin3D);
 
 			//ET ON L'AJOUTE AU TABLEAU DES TABLEAUX TRAITES
 			saveline.push(level+pattern[valinit]);
@@ -288,9 +291,9 @@ function createAll (pattern,valinit)
 			maxvalueleft=0;
 			for(var j=0;j<maxpos+1;j++)
 			{
-				maxvalueleft+=cadreWidth3D[(saveline[j]%10)-1] - margin3D;
+				maxvalueleft+=cadreWidth3D[(saveline[j]%10)-1] + margin3D;
 			}
-			maxvalueleft-= margin3D*2 + cadreWidth3D[maxtype];
+			maxvalueleft-= (3*margin3D + cadreWidth3D[maxtype]);
 			createAll(pattern,0);
 		}
 		else if(valinit>=pattern.length && step==2)
@@ -303,11 +306,9 @@ function createAll (pattern,valinit)
 			idtab=0;
 			maxvalueleft=0;
 			maxvaluetop=0;
+			maxtype=5;
+			midtype=5;
 			console.log(pattern);
-			// if(murs.length==1)
-			// {
-			// 	nbsalle=2;
-			// }
 			if(murs%2==1)
 			{
 
@@ -460,11 +461,6 @@ function createRoom(nbsalle)
         obj[i.hitBox].material = new BABYLON.StandardMaterial("Mat", scene);
         obj[i.hitBox].material.alpha = 0;
 
-        // // Move the hitBox 
-        // hitBox.position.y = 1;
-        // hitBox.position.x = -8;
-        // hitBox.position.z = -8;
-
         // Move the box 
         obj[i.hitBox].position.y = 0;
         obj[i.hitBox].position.x = -i*20;
@@ -492,7 +488,6 @@ function createRoom(nbsalle)
 
 //--------------------------------------------CREATION DE LA SCENE---------------------------------
 //-------------------------------------------------------------------------------------------------
-// var createScene = function () {
 
     // This creates a Babylon Scene object (not a shape/mesh)
     var scene = new BABYLON.Scene(engine);
@@ -527,10 +522,6 @@ function createRoom(nbsalle)
     mateWall.bumpTexture = new BABYLON.Texture("textures/wallmodified.jpg", scene);
 
     createAll(pattern);
-
-    // // Leave this function
-    // return scene;
-// };
 
 // var scene = createScene();
 
