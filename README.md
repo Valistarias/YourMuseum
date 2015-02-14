@@ -7,10 +7,12 @@ A. Format portrait
   1. Grand
   2. Moyen
   3. Petit
+
 B. Format paysage
   4. Grand
   5. Moyen
   6. Petit
+
 C. Format carré
   1. Grand
   2. Moyen
