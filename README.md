@@ -3,6 +3,7 @@ Lab - 3D Testing
 
 ## MAJ 1.0 - Premier pas vers le musée 3D
 La variable "pattern" permet de modifier le nombre de tableaux et le type
+
 A. Format portrait
   1. Grand
   2. Moyen
